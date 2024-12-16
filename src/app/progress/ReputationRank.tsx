@@ -54,12 +54,18 @@ export function ReputationRank({
             rank: progress.level + 1,
           })}
         </div>
-        <div className={styles.factionName}>{step.stepName}</div>
         <div className={styles.factionLevel}>
           {progressionDef.rankIcon && (
             <BungieImage className={styles.rankIcon} src={progressionDef.rankIcon} />
           )}
-          {progress.currentProgress} ({progress.progressToNextLevel} / {progress.nextLevelAt})
+          {step.stepName} ({progress.progressToNextLevel} / {progress.nextLevelAt})
+          <br />
+          <progress value={progress.progressToNextLevel / progress.nextLevelAt} />
+        </div>
+        <div className={clsx(styles.factionLevel, rankPercent === 100 && styles.max)}>
+          {progress.currentProgress} / 10000 ({rankPercent}%)
+          <br />
+          <progress value={rankPercent / 100} />
         </div>
         {streakCheckboxes && (
           <div className={clsx(styles.winStreak, 'objective-row')}>
@@ -68,11 +74,6 @@ export function ReputationRank({
             ))}
           </div>
         )}
-        <div className={clsx(styles.factionLevel, rankPercent === 100 && styles.max)}>
-          {t(resetLabel, {
-            pct: rankPercent,
-          })}
-        </div>
         {Boolean(progress.currentResetCount) && (
           <div className={styles.factionLevel}>
             {t('Progress.Resets', { count: progress.currentResetCount })}
