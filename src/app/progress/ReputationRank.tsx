@@ -33,6 +33,10 @@ export function ReputationRank({
   const resetLabel = canReset ? tl('Progress.PercentPrestige') : tl('Progress.PercentMax');
 
   const rankTotal = sumBy(progressionDef.steps, (cur) => cur.progressTotal);
+  let progressPercent = Math.floor((progress.progressToNextLevel / progress.nextLevelAt) * 100);
+  if (!progressPercent) {
+    progressPercent = 0;
+  }
   const rankPercent = Math.floor((progress.currentProgress / rankTotal) * 100);
 
   const streakCheckboxes =
@@ -58,7 +62,8 @@ export function ReputationRank({
           {progressionDef.rankIcon && (
             <BungieImage className={styles.rankIcon} src={progressionDef.rankIcon} />
           )}
-          {step.stepName} ({progress.progressToNextLevel} / {progress.nextLevelAt})
+          {step.stepName} {progress.progressToNextLevel} / {progress.nextLevelAt} ({progressPercent}
+          %)
           <br />
           <progress value={progress.progressToNextLevel / progress.nextLevelAt} />
         </div>
